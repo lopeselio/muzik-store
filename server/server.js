@@ -27,6 +27,29 @@ const { admin } = require('./middleware/admin')
 //              PRODUCTS
 //= ================================
 
+// Sort By Arrival
+// /articles?sortBy=createdAt&order=desc&limit=4
+app.get('/api/product/articles', (req, res) => {
+  const order = req.query.order ? req.query.order : 'asc'
+  const sortBy = req.query.sortBy ? req.query.sortBy : '_id'
+  const limit = req.query.limit ? parseInt(req.query.limit) : 100
+
+  Product
+    .find()
+    .populate('brand')
+    .populate('wood')
+    .sort([[sortBy, order]])
+    .limit(limit)
+    .exec((err, articles) => {
+      if (err) return res.status(400).send(err)
+      res.send(articles)
+    })
+})
+
+// Sort by sale
+// /articles?sortBy=solf&order=desc&limit=4
+// Sort By ID
+
 app.get('/api/product/articles_by_id', (req, res) => {
   const type = req.query.type
   let items = req.query.id
@@ -40,12 +63,13 @@ app.get('/api/product/articles_by_id', (req, res) => {
   }
   Product
     .find({ _id: { $in: items } })
-  .populate('brand')
-  .populate('wood')
-  .exec((err, docs) => {
+    .populate('brand')
+    .populate('wood')
+    .exec((err, docs) => {
       return res.status(200).send(docs)
     })
 })
+
 app.post('/api/product/article', auth, admin, (req, res) => {
   const product = new Product(req.body)
   product.save((err, doc) => {
