@@ -16,9 +16,31 @@ app.use(cookieParser())
 // Models
 const { User } = require('./models/user')
 const { Brand } = require('./models/brand')
+const { Wood } = require('./models/wood')
+
 // Middlewares
 const { auth } = require('./middleware/auth')
 const { admin } = require('./middleware/admin')
+
+//= ================================
+//              WOODS
+//= ================================
+app.post('/api/product/wood', auth, admin, (req, res) => {
+  const wood = new Wood(req.body)
+  wood.save((err, doc) => {
+    if (err) return res.json({ success: false, err })
+    res.json(200).json({
+      success: true,
+      wood: doc
+    })
+  })
+})
+app.get('/api/product/woods', (req, res) => {
+  Wood.find({}, (err, woods) => {
+    if (err) return res.status(400).send(err)
+    res.status(200).send(woods)
+  })
+})
 
 //= ================================
 //              BRAND
@@ -40,7 +62,6 @@ app.get('/api/product/brands', (req, res) => {
     if (err) return res.status(400).send(err)
     res.status(200).send(brands)
   })
-
 })
 
 //= ================================
@@ -49,7 +70,7 @@ app.get('/api/product/brands', (req, res) => {
 
 app.get('/api/users/auth', auth, (req, res) => {
   res.status(200).json({
-    isAdmin: req.user.role === 0 ? false : true,
+    isAdmin: req.user.role !== 0,
     isAuth: true,
     email: req.user.email,
     name: req.user.name,
@@ -89,16 +110,16 @@ app.post('/api/users/login', (req, res) => {
   })
 })
 
-app.get('/api/user/logout',auth,(req,res)=>{
+app.get('/api/user/logout', auth, (req, res) => {
   User.findOneAndUpdate(
-      { _id:req.user._id },
-      { token: '' },
-      (err, doc)=>{
-          if(err) return res.json({success:false,err});
+    { _id: req.user._id },
+    { token: '' },
+    (err, doc) => {
+      if (err) return res.json({ success: false, err })
           return res.status(200).send({
-              success: true
-          })
-      }
+        success: true
+      })
+    }
   )
 })
 
