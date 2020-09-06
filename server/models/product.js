@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 const productSchema = mongoose.Schema({
   name: {
     required: true,
-    type: String, 
+    type: String,
     unique: 1,
     maxLength: 100
   },
@@ -38,7 +38,7 @@ const productSchema = mongoose.Schema({
   frets: {
     required: true,
     type: Number
-  }, 
+  },
   sold: {
     type: Number,
     maxLength: 100,
@@ -50,7 +50,7 @@ const productSchema = mongoose.Schema({
   },
   images: {
     type: Array,
-    default:[]
+    default: []
   }
 
 })
