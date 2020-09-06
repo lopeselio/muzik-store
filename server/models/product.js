@@ -53,6 +53,6 @@ const productSchema = mongoose.Schema({
     default: []
   }
 
-})
+}, { timestamps: true })
 const Product = mongoose.model('Product', productSchema)
 module.exports = { Product }
