@@ -43,6 +43,14 @@ const productSchema = mongoose.Schema({
     type: Number,
     maxLength: 100,
     default: 0
+  },
+  publish: {
+    type: Boolean,
+    required: true
+  },
+  images: {
+    type: Array,
+    default:[]
   }
 
 })
