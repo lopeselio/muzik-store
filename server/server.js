@@ -15,8 +15,24 @@ app.use(cookieParser())
 
 // Models
 const { User } = require('./models/user')
+const { Brand } = require('./models/brand')
 // Middlewares
 const { auth } = require('./middleware/auth')
+
+//= ================================
+//              BRAND
+//= ================================
+app.post('/api/product/brand', auth, (req, res) => {
+  const brand = new Brand(req.body)
+
+  brand.save((err, doc) => {
+    if (err) return res.json({ success: false, err })
+    res.status(200).json({
+      success: true,
+      brand: doc
+    })
+  })
+})
 
 //= ================================
 //              USERS
@@ -68,7 +84,7 @@ app.get('/api/user/logout',auth,(req,res)=>{
   User.findOneAndUpdate(
       { _id:req.user._id },
       { token: '' },
-      (err,doc)=>{
+      (err, doc)=>{
           if(err) return res.json({success:false,err});
           return res.status(200).send({
               success: true
@@ -77,7 +93,7 @@ app.get('/api/user/logout',auth,(req,res)=>{
   )
 })
 
-const port = process.env.PORT || 3002
+const port = process.env.PORT || 3000
 app.listen(port, () => {
   console.log(`Server Running at ${port}`)
 })
