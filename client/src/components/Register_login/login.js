@@ -38,6 +38,10 @@ class Login extends Component {
       }
     }
   }
+
+  updateForm = () => {
+    
+  }
   submitForm = () => {
 
   }
@@ -45,7 +49,11 @@ class Login extends Component {
     return (
       <div className='signin_wrapper'>
         <form onSubmit={ (event) => this.submitForm(event)}>
-        
+          <formField
+            id={'email'}
+            formdata={this.state.formdata.email}
+            change={(element) => this.updateForm(element)}
+          />
         </form>
       </div>
     )
