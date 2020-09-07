@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import FormField from '../utils/Form/formfield'
 import { connect } from 'react-redux'
 class Login extends Component {
   state = {
     formError: false,
     formSuccess:'',
-    formData:{
+    formdata:{
       email:{
         element: 'input',
         value: '',
@@ -40,7 +41,7 @@ class Login extends Component {
   }
 
   updateForm = () => {
-    
+
   }
   submitForm = () => {
 
@@ -49,7 +50,7 @@ class Login extends Component {
     return (
       <div className='signin_wrapper'>
         <form onSubmit={ (event) => this.submitForm(event)}>
-          <formField
+          <FormField
             id={'email'}
             formdata={this.state.formdata.email}
             change={(element) => this.updateForm(element)}
