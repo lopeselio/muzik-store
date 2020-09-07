@@ -15,7 +15,9 @@ import Reducer from './reducers'
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore)
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Routes />
-  </BrowserRouter>
+  <Provider store={createStoreWithMiddleware(Reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())}>
+    <BrowserRouter>
+      <Routes />
+    </BrowserRouter>
+  </Provider>
   , document.getElementById('root'))
