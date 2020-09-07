@@ -20,6 +20,8 @@ const RegisterLogin = () => {
           </div>
           <div className='right'>
             <h1>Existing Customer</h1>
+            <p>Have an account? Please login.</p>
+              LOGIN
           </div>
         </div>
       </div>
