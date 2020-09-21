@@ -1,6 +1,15 @@
 import React, { Component } from 'react'
+import FormField from '../utils/Form/formfield'
+import { update, generateData, isFormValid } from '../utils/Form/formActions'
+import { connect } from 'react-redux'
+import { loginUser } from '../../actions/user_actions'
 
 class Register extends Component {
+  state = {
+    formError: false,
+    formSuccess: '',
+    formdata: {}
+  }
   render () {
     return (
       <div>Register</div>
@@ -8,4 +17,4 @@ class Register extends Component {
   }
 }
 
-export default Register
+export default connect()(Register)
