@@ -24,11 +24,14 @@ const { auth } = require('./middleware/auth')
 const { admin } = require('./middleware/admin')
 
 //= ================================
-//              PRODUCTS
+//             PRODUCTS
 //= ================================
 
-// Sort By Arrival
+// BY ARRIVAL
 // /articles?sortBy=createdAt&order=desc&limit=4
+
+// BY SELL
+// /articles?sortBy=sold&order=desc&limit=100&skip=5
 app.get('/api/product/articles', (req, res) => {
   const order = req.query.order ? req.query.order : 'asc'
   const sortBy = req.query.sortBy ? req.query.sortBy : '_id'
@@ -46,10 +49,7 @@ app.get('/api/product/articles', (req, res) => {
     })
 })
 
-// Sort by sale
-// /articles?sortBy=solf&order=desc&limit=4
-// Sort By ID
-
+/// /api/product/article?id=HSHSHSKSK,JSJSJSJS,SDSDHHSHDS,JSJJSDJ&type=single
 app.get('/api/product/articles_by_id', (req, res) => {
   const type = req.query.type
   let items = req.query.id
@@ -61,6 +61,7 @@ app.get('/api/product/articles_by_id', (req, res) => {
       return mongoose.Types.ObjectId(item)
     })
   }
+
   Product
     .find({ _id: { $in: items } })
     .populate('brand')
@@ -72,11 +73,12 @@ app.get('/api/product/articles_by_id', (req, res) => {
 
 app.post('/api/product/article', auth, admin, (req, res) => {
   const product = new Product(req.body)
+
   product.save((err, doc) => {
     if (err) return res.json({ success: false, err })
-    res.json(200).json({
+    res.status(200).json({
       success: true,
-      product: doc
+      article: doc
     })
   })
 })
@@ -84,16 +86,19 @@ app.post('/api/product/article', auth, admin, (req, res) => {
 //= ================================
 //              WOODS
 //= ================================
+
 app.post('/api/product/wood', auth, admin, (req, res) => {
   const wood = new Wood(req.body)
+
   wood.save((err, doc) => {
     if (err) return res.json({ success: false, err })
-    res.json(200).json({
+    res.status(200).json({
       success: true,
       wood: doc
     })
   })
 })
+
 app.get('/api/product/woods', (req, res) => {
   Wood.find({}, (err, woods) => {
     if (err) return res.status(400).send(err)
@@ -104,6 +109,7 @@ app.get('/api/product/woods', (req, res) => {
 //= ================================
 //              BRAND
 //= ================================
+
 app.post('/api/product/brand', auth, admin, (req, res) => {
   const brand = new Brand(req.body)
 
@@ -147,7 +153,6 @@ app.post('/api/users/register', (req, res) => {
     if (err) return res.json({ success: false, err })
     res.status(200).json({
       success: true
-      // userdata: doc
     })
   })
 })
