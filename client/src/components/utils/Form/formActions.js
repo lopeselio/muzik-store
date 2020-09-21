@@ -1,17 +1,19 @@
-// Form validation during the login
 
 export const validate = (element, formdata = []) => {
   let error = [true, '']
+
   if (element.validation.email) {
     const valid = /\S+@\S+\.\S+/.test(element.value)
     const message = `${!valid ? 'Must be a valid email' : ''}`
     error = !valid ? [valid, message] : error
   }
+
   if (element.validation.required) {
-    const valid = element.value.trim() != ''
+    const valid = element.value.trim() !== ''
     const message = `${!valid ? 'This field is required' : ''}`
     error = !valid ? [valid, message] : error
   }
+
   return error
 }
 
@@ -19,7 +21,6 @@ export const update = (element, formdata, formName) => {
   const newFormdata = {
     ...formdata
   }
-
   const newElement = {
     ...newFormdata[element.id]
   }
@@ -40,15 +41,18 @@ export const update = (element, formdata, formName) => {
 
 export const generateData = (formdata, formName) => {
   const dataToSubmit = {}
+
   for (const key in formdata) {
     dataToSubmit[key] = formdata[key].value
   }
+
   return dataToSubmit
 }
 
 export const isFormValid = (formdata, formName) => {
   let formIsValid = true
-  for (let key in formdata) {
+
+  for (const key in formdata) {
     formIsValid = formdata[key].valid && formIsValid
   }
   return formIsValid
