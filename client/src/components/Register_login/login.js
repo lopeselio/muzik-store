@@ -52,7 +52,7 @@ class Login extends Component {
     event.preventDefault()
     let dataToSubmit = generateData(this.state.formdata, 'login')
     let formIsvalid = isFormValid(this.state.formdata, 'login')
-    if(fromIsValid){
+    if(fromIsvalid){
     console.log(dataToSubmit)
 
     }else {
