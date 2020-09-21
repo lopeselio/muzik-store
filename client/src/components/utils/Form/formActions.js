@@ -37,3 +37,11 @@ export const update = (element, formdata, formName) => {
 
   return newFormdata
 }
+
+export const generateData = (formdata, formName) => {
+  const dataToSubmit = {}
+  for (const key in formdata) {
+    dataToSubmit[key] = formdata[key].value
+  }
+  return dataToSubmit
+}
