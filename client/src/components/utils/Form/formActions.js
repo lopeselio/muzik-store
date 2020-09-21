@@ -48,7 +48,7 @@ export const generateData = (formdata, formName) => {
 
 export const isFormValid = (formdata, formName) => {
   let formIsValid = true
-  for (const key in formdata) {
+  for (let key in formdata) {
     formIsValid = formdata[key].valid && formIsValid
   }
   return formIsValid
