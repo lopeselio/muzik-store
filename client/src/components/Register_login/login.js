@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import FormField from '../utils/Form/formfield'
 import { connect } from 'react-redux'
-import { update, generateData } from '../utils/Form/formActions'
+import { update, generateData, isFormValid } from '../utils/Form/formActions'
 class Login extends Component {
   state = {
     formError: false,
@@ -51,7 +51,15 @@ class Login extends Component {
   submitForm = (event) => {
     event.preventDefault()
     let dataToSubmit = generateData(this.state.formdata, 'login')
+    let formIsvalid = isFormValid(this.state.formdata, 'login')
+    if(fromIsValid){
     console.log(dataToSubmit)
+
+    }else {
+      this.setState({
+        formError: true
+      })
+    }
 
   }
   render () {
