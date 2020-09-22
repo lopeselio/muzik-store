@@ -7,7 +7,7 @@ export default function(ComposedClass,reload,adminRoute = null){
     class AuthenticationCheck extends Component {
 
         state = {
-            loading: true
+            loading: false
         }
 
         componentDidMount(){
