@@ -12,8 +12,7 @@ const MyButton = (props) => {
           to={props.linkTo}
           {...props.addStyles}
         >
-          {props.title}
-                   </Link>
+          {props.title}</Link>
         break
       default:
         template = ''
