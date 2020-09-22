@@ -1,11 +1,35 @@
 import React from 'react'
 
-function componentName() {
+const CardBlock = (props) => {
+  const renderCards = () => {
+    props.list
+      ? props.list.map((card, i) => {
+        <div>
+          CARD
+        </div>
+      })
+      : null
+  }
   return (
-    <div>
-      
+    <div className='card_block'>
+      <div classNeame='container'>
+        {
+          props.title 
+            ? <div className='title'>
+              {props.title}
+            </div>
+            : null
+        }
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap'
+        }}
+        >
+          {renderCards(props.list)}
+        </div>
+      </div>
     </div>
   )
 }
 
-export default componentName
+export default CardBlock
