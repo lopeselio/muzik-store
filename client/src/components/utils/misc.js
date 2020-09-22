@@ -1,3 +1,4 @@
 // SERVER ROUTES
-export const USER_SERVER = '/api/users';
-export const PRODUCT_SERVER = '/api/product/';
+
+export const USER_SERVER = '/users';
+export const PRODUCT_SERVER = '/product';
