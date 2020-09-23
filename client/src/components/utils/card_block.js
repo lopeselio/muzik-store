@@ -1,23 +1,24 @@
 import React from 'react'
+import Card from './card'
 
 const CardBlock = (props) => {
-  const renderCards = () => {
+  const renderCards = () => (
     props.list
-      ? props.list.map((card, i) => {
-        <div>
-          CARD
-        </div>
-      })
+      ? props.list.map((card, i) => (
+        <Card
+          key={i}
+          {...card}
+        />
+      ))
       : null
-  }
+  )
+
   return (
     <div className='card_block'>
-      <div classNeame='container'>
+      <div className='container'>
         {
-          props.title 
-            ? <div className='title'>
-              {props.title}
-            </div>
+          props.title
+            ? <div className='title'>{props.title}</div>
             : null
         }
         <div style={{
@@ -27,6 +28,7 @@ const CardBlock = (props) => {
         >
           {renderCards(props.list)}
         </div>
+
       </div>
     </div>
   )
