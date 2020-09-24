@@ -6,12 +6,6 @@ import CardBlock from '../utils/card_block'
 import { connect } from 'react-redux'
 import { getProductsBySell, getProductsByArrival } from '../../actions/products_actions'
 
-const mapStateToProps = (state) => {
-  return {
-    products: state.products
-  }
-}
-
 class Home extends Component {
   componentDidMount () {
     this.props.dispatch(getProductsBySell())
@@ -22,11 +16,23 @@ class Home extends Component {
     return (
       <div>
         <HomeSlider />
-        <CardBlock list={this.props.products.bySell} title='Best selling Guitars' />
+        <CardBlock
+          list={this.props.products.bySell}
+          title='Best Selling guitars'
+        />
         <HomePromotion />
-        <CardBlock list={this.props.products.byArrival} title='New Arrivals' />
+        <CardBlock
+          list={this.props.products.byArrival}
+          title='New arrivals'
+        />
       </div>
     )
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    products: state.products
   }
 }
 
