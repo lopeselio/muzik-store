@@ -18,7 +18,9 @@ const CardBlock = (props) => {
       <div className='container'>
         {
           props.title
-            ? <div className='title'>{props.title}</div>
+            ? <div className='title'>
+              {props.title}
+              </div>
             : null
         }
         <div style={{
