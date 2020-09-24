@@ -55,7 +55,7 @@ const UserLayout = (props) => {
               <div className='links'>
                 {generateLinks(admin)}
               </div>
-              </div>
+            </div>
             : null}
 
         </div>
