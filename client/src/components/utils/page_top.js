@@ -1,13 +1,13 @@
-import React from 'react'
+import React from 'react';
 
 const PageTop = (props) => {
-  return (
-    <div className='page_top'>
-      <div className='container'>
-        {props.title}
-      </div>
-    </div>
-  )
-}
+    return (
+        <div className="page_top">
+            <div className="container">
+                {props.title}
+            </div>
+        </div>
+    );
+};
 
-export default PageTop
+export default PageTop;
