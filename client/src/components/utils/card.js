@@ -28,7 +28,7 @@ class Card extends Component {
           </div>
         </div>
         {props.grid
-          ? <div className='description'>kshdjshdsdjshd</div>
+          ? <div className='description'><p>{props.description}</p></div>
           : null}
         <div className='actions'>
           <div className='button_wrapp'>
