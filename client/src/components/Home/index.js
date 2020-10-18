@@ -9,7 +9,9 @@ import { getProductsBySell, getProductsByArrival } from '../../actions/products_
 class Home extends Component {
 
     componentDidMount(){
-        this.props.dispatch(getProductsBySell());
+        this.props.dispatch(getProductsBySell()).then(()=>{
+            console.log(this.props)
+        });
         this.props.dispatch(getProductsByArrival());
     }
 
