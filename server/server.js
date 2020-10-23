@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser'); 
 const formidable = require('express-formidable');
 const cloudinary = require('cloudinary');
+// const mailer = require('nodemailer');
 
 const app = express();
 const mongoose = require('mongoose');
@@ -33,6 +34,35 @@ const { Site } = require('./models/site');
 // Middlewares
 const { auth } = require('./middleware/auth');
 const { admin } = require('./middleware/admin');
+
+// UTILS
+const { sendEmail } = require('./utils/mail/index');
+
+
+// const smtpTransport = mailer.createTransport({
+//     service:"Gmail",
+//     auth:{
+//         user: "lopesdevelioper@gmail.com",
+//         pass: "18Bruno!!!!"
+//     }
+// });
+
+// var mail = {
+//     from: "Muzik! <lopesdevelioper@gmail.com>",
+//     to: "lopeselio@gmail.com",
+//     subject: "Send test email",
+//     text: "Testing our muzik mails",
+//     html: "<b>Hello guys, this works</b>"
+// }
+
+// smtpTransport.sendMail(mail,function(error,response){
+//     if(error){
+//         console.log(error);
+//     } else {
+//         console.log('email sent')
+//     }
+//     smtpTransport.close();
+// })
 
 
 //=================================
@@ -207,7 +237,8 @@ app.post('/api/users/register',(req,res)=>{
 
     user.save((err,doc)=>{
         if(err) return res.json({success:false,err});
-        res.status(200).json({
+        sendEmail(doc.email,doc.name,null,"welcome");
+        return res.status(200).json({
             success: true
         })
     })
