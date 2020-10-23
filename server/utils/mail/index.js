@@ -11,15 +11,15 @@ const getEmailData = (to,name,token,template,actionData) =>{
     switch(template){
         case "welcome":
             data = {
-                from: "Waves <waves.guitars.rev@gmail.com>",
+                from: "MUZIK!! <lopesdevelioper@gmail.com>",
                 to,
-                subject: `Welcome to waves ${name}`,
+                subject: `Welcome to MUZIK! ${name}`,
                 html: welcome()
             }
         break;
         case "purchase":
             data = {
-                from: "Waves <waves.guitars.rev@gmail.com>",
+                from: "MUZIK! <lopesdevelioper@gmail.com>",
                 to,
                 subject: `Thanks for shopping with us ${name}`,
                 html: purchase(actionData)
@@ -27,9 +27,9 @@ const getEmailData = (to,name,token,template,actionData) =>{
         break;
         case "reset_password":
             data = {
-                from: "Waves <waves.guitars.rev@gmail.com>",
+                from: "MUZIK! <lopesdevelioper@gmail.com>",
                 to,
-                subject: `Hey ${name}, reset your pass`,
+                subject: `Hey ${name}, reset your password!`,
                 html: resetPass(actionData)
             }
         break;
@@ -45,7 +45,7 @@ const sendEmail = (to,name,token,type,actionData = null) => {
     const smtpTransport = mailer.createTransport({
         service:"Gmail",
         auth:{
-            user: "waves.guitars.rev@gmail.com",
+            user: "lopesdevelioper@gmail.com",
             pass: process.env.EMAIL_PASS
         }
     });
