@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const formidable = require('express-formidable');
 const cloudinary = require('cloudinary');
 // const mailer = require('nodemailer');
+const SHA1 = require("crypto-js/sha1"); 
 
 const app = express();
 const mongoose = require('mongoose');
@@ -62,6 +63,33 @@ const { sendEmail } = require('./utils/mail/index');
 //         console.log('email sent')
 //     }
 //     smtpTransport.close();
+// })
+
+//=================================
+//             ADMIN UPLOADS
+//=================================
+
+// const upload = multer({storage:storage }).single('file')
+
+// app.post('/api/users/uploadfile',auth,admin,(req,res)=>{
+//     upload(req,res,(err)=>{
+//         if(err){
+//             return res.json({success:false,err})
+//         }
+//         return res.json({success:true})
+//     })
+// })
+
+// app.get('/api/users/admin_files',auth,admin,(req,res)=>{
+//     const dir = path.resolve(".")+'/uploads/';
+//     fs.readdir(dir,(err,items)=>{
+//         return res.status(200).send(items);
+//     })
+// })
+
+// app.get('/api/users/download/:id',auth,admin,(req,res)=>{
+//     const file = path.resolve(".")+`/uploads/${req.params.id}`;
+//     res.download(file)
 // })
 
 
@@ -369,10 +397,13 @@ app.get('/api/users/removeFromCart',auth,(req,res)=>{
 app.post('/api/users/successBuy',auth,(req,res)=>{
     let history = [];
     let transactionData = {}
+    const date = new Date();
+    const po = `PO-${date.getSeconds()}${date.getMilliseconds()}-${SHA1(req.user._id).toString().substring(0,8)}`
 
     // user history
     req.body.cartDetail.forEach((item)=>{
         history.push({
+            porder: po,
             dateOfPurchase: Date.now(),
             name: item.name,
             brand: item.brand.name,
@@ -390,7 +421,10 @@ app.post('/api/users/successBuy',auth,(req,res)=>{
         lastname: req.user.lastname,
         email: req.user.email
     }
-    transactionData.data = req.body.paymentData;
+    transactionData.data = {
+        ...req.body.paymentData,
+        porder: po
+    };
     transactionData.product = history;
         
     User.findOneAndUpdate(
@@ -418,7 +452,8 @@ app.post('/api/users/successBuy',auth,(req,res)=>{
                         callback
                     )
                 },(err)=>{
-                    if(err) return res.json({success:false,err})
+                    if(err) return res.json({success:false,err});
+                    sendEmail(user.email,user.name,null,"purchase",transactionData)
                     res.status(200).json({
                         success:true,
                         cart: user.cart,
@@ -429,7 +464,6 @@ app.post('/api/users/successBuy',auth,(req,res)=>{
         }
     )
 });
-
 
 app.post('/api/users/update_profile',auth,(req,res)=>{
 
