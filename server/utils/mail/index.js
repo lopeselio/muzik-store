@@ -11,9 +11,9 @@ const getEmailData = (to,name,token,template,actionData) =>{
     switch(template){
         case "welcome":
             data = {
-                from: "MUZIK!! <lopesdevelioper@gmail.com>",
+                from: "MUZIK! <lopesdevelioper@gmail.com>",
                 to,
-                subject: `Welcome to MUZIK! ${name}`,
+                subject: `Welcome to waves ${name}`,
                 html: welcome()
             }
         break;
@@ -29,7 +29,7 @@ const getEmailData = (to,name,token,template,actionData) =>{
             data = {
                 from: "MUZIK! <lopesdevelioper@gmail.com>",
                 to,
-                subject: `Hey ${name}, reset your password!`,
+                subject: `Hey ${name}, reset your pass`,
                 html: resetPass(actionData)
             }
         break;
