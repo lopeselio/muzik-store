@@ -1,6 +1,7 @@
 import React from 'react';
-import moment from 'moment';
-
+// import moment from 'moment';
+// <td>{moment(product.dateOfPurchase).format("MM-DD-YYYY")}</td> how to use moment.js
+ 
 const UserHistoryBlock = (props) => {
 
 
@@ -8,7 +9,7 @@ const UserHistoryBlock = (props) => {
         props.products ?
             props.products.map((product,i)=>(
                 <tr key={i}>
-                    <td>{moment(product.dateOfPurchase).format("MM-DD-YYYY")}</td>
+                    <td>{product.porder}</td>
                     <td>{product.brand} {product.name}</td>
                     <td>$ {product.price}</td>
                     <td>{product.quantity}</td>
@@ -22,7 +23,7 @@ const UserHistoryBlock = (props) => {
             <table>
                 <thead>
                     <tr>
-                        <th>Date of purchase</th>
+                        <th>Order Number</th>
                         <th>Product</th>
                         <th>Price paid</th>
                         <th>Quantity</th>
