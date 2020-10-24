@@ -6,7 +6,7 @@ import { update, generateData, isFormValid } from '../utils/Form/formActions';
 
 
 
-class ReserUser extends Component {
+class ResetUser extends Component {
 
     state = {
         formError: false,
@@ -96,4 +96,4 @@ class ReserUser extends Component {
     }
 }
 
-export default ReserUser;
+export default ResetUser;
