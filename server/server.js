@@ -3,8 +3,11 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser'); 
 const formidable = require('express-formidable');
 const cloudinary = require('cloudinary');
-// const mailer = require('nodemailer');
 const SHA1 = require("crypto-js/sha1"); 
+const multer = require('multer');
+const moment = require("moment");
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const mongoose = require('mongoose');
@@ -18,11 +21,32 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+// app.use(express.static('client/build'))
+
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.CLOUD_API_KEY,
     api_secret: process.env.CLOUD_API_SECRET
-})
+});
+
+// STORAGE MULTER CONFIG
+let storage = multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null,'uploads/')
+    },
+    filename:(req,file,cb)=>{
+        cb(null,`${Date.now()}_${file.originalname}`)
+    },
+    // fileFilter:(req,file,cb)=>{
+
+    //     const ext = path.extname(file.originalname)
+    //     if(ext !== '.jpg' && ext !== '.png'){
+    //         return cb(res.status(400).end('only jpg, png is allowed'),false);
+    //     }
+
+    //     cb(null,true)
+    // }
+});
 
 // Models
 const { User } = require('./models/user');
@@ -39,59 +63,32 @@ const { admin } = require('./middleware/admin');
 // UTILS
 const { sendEmail } = require('./utils/mail/index');
 
-
-// const smtpTransport = mailer.createTransport({
-//     service:"Gmail",
-//     auth:{
-//         user: "lopesdevelioper@gmail.com",
-//         pass: "18Bruno!!!!"
-//     }
-// });
-
-// var mail = {
-//     from: "Muzik! <lopesdevelioper@gmail.com>",
-//     to: "lopeselio@gmail.com",
-//     subject: "Send test email",
-//     text: "Testing our muzik mails",
-//     html: "<b>Hello guys, this works</b>"
-// }
-
-// smtpTransport.sendMail(mail,function(error,response){
-//     if(error){
-//         console.log(error);
-//     } else {
-//         console.log('email sent')
-//     }
-//     smtpTransport.close();
-// })
-
 //=================================
 //             ADMIN UPLOADS
 //=================================
 
-// const upload = multer({storage:storage }).single('file')
+const upload = multer({storage:storage }).single('file')
 
-// app.post('/api/users/uploadfile',auth,admin,(req,res)=>{
-//     upload(req,res,(err)=>{
-//         if(err){
-//             return res.json({success:false,err})
-//         }
-//         return res.json({success:true})
-//     })
-// })
+app.post('/api/users/uploadfile',auth,admin,(req,res)=>{
+    upload(req,res,(err)=>{
+        if(err){
+            return res.json({success:false,err})
+        }
+        return res.json({success:true})
+    })
+})
 
-// app.get('/api/users/admin_files',auth,admin,(req,res)=>{
-//     const dir = path.resolve(".")+'/uploads/';
-//     fs.readdir(dir,(err,items)=>{
-//         return res.status(200).send(items);
-//     })
-// })
+app.get('/api/users/admin_files',auth,admin,(req,res)=>{
+    const dir = path.resolve(".")+'/uploads/';
+    fs.readdir(dir,(err,items)=>{
+        return res.status(200).send(items);
+    })
+})
 
-// app.get('/api/users/download/:id',auth,admin,(req,res)=>{
-//     const file = path.resolve(".")+`/uploads/${req.params.id}`;
-//     res.download(file)
-// })
-
+app.get('/api/users/download/:id',auth,admin,(req,res)=>{
+    const file = path.resolve(".")+`/uploads/${req.params.id}`;
+    res.download(file)
+})
 
 //=================================
 //             PRODUCTS
@@ -246,6 +243,46 @@ app.get('/api/product/brands',(req,res)=>{
 //=================================
 //              USERS
 //=================================
+
+app.post('/api/users/reset_user',(req,res)=>{
+    User.findOne(
+        {'email':req.body.email},
+        (err,user)=>{
+            user.generateResetToken((err,user)=>{
+                if(err) return res.json({success:false,err});
+                sendEmail(user.email,user.name,null,"reset_password",user)
+                return res.json({success:true})
+            })
+        }
+    )
+})
+
+
+app.post('/api/users/reset_password',(req,res)=>{
+
+    var today = moment().startOf('day').valueOf();
+
+    User.findOne({
+        resetToken: req.body.resetToken,
+        resetTokenExp:{
+            $gte: today
+        }
+    },(err,user)=>{
+        if(!user) return res.json({success:false,message:'Sorry, token bad, generate a new one.'})
+    
+        user.password = req.body.password;
+        user.resetToken = '';
+        user.resetTokenExp= '';
+
+        user.save((err,doc)=>{
+            if(err) return res.json({success:false,err});
+            return res.status(200).json({
+                success: true
+            })
+        })
+    })
+})
+
 
 app.get('/api/users/auth',auth,(req,res)=>{
         res.status(200).json({
@@ -465,6 +502,7 @@ app.post('/api/users/successBuy',auth,(req,res)=>{
     )
 });
 
+
 app.post('/api/users/update_profile',auth,(req,res)=>{
 
     User.findOneAndUpdate(
@@ -480,7 +518,8 @@ app.post('/api/users/update_profile',auth,(req,res)=>{
             })
         }
     );
-})
+});
+
 
 //=================================
 //              SITE
@@ -508,13 +547,13 @@ app.post('/api/site/site_data',auth,admin,(req,res)=>{
     )
 })
 
-// // DEFAULT 
-// if( process.env.NODE_ENV === 'production' ){
-//     const path = require('path');
-//     app.get('/*',(req,res)=>{
-//         res.sendfile(path.resolve(__dirname,'../client','build','index.html'))
-//     })
-// }
+// DEFAULT 
+if( process.env.NODE_ENV === 'production' ){
+    const path = require('path');
+    app.get('/*',(req,res)=>{
+        res.sendfile(path.resolve(__dirname,'../client','build','index.html'))
+    })
+}
 
 
 const port = process.env.PORT || 3002;
