@@ -33,7 +33,7 @@ const purchase = data => {
                         <td style="background-color: #999592; margin: 0 auto;">
                             <h1 style="box-sizing: border-box; color: white; font-family: Helvetica, Arial, sans-serif; letter-spacing: 0.5px; line-height: 1.4; margin: 0; padding: 15px 25px; text-align: center; text-transform: uppercase;">
                             
-                            Thank you for buying</h1></td>
+                            Thank you for buying with MUZIK! Come back and buy again with us!!</h1></td>
                     </tr>
                     <tr>
                         <td style="margin: 0 auto;">
