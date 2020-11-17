@@ -20,6 +20,8 @@ A one stop destination for shopping guitars of various brands, with enhnaced fil
 ![8](https://github.com/lopeselio/muzik-store/blob/master/pics/8.png)
 ![9](https://github.com/lopeselio/muzik-store/blob/master/pics/9.png)
 ![10](https://github.com/lopeselio/muzik-store/blob/master/pics/10.png)
+![11](https://github.com/lopeselio/muzik-store/blob/master/pics/11.png)
+![12](https://github.com/lopeselio/muzik-store/blob/master/pics/12.png)
 
 
 
